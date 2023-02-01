@@ -9,13 +9,13 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.addConstraint("Order", {
-            fields: ["userId"],
+        await queryInterface.addConstraint("Product-Cart", {
+            fields: ["cartId"],
             type: "foreign key",
             name: "User_Order_userId_fk",
             references: {
-                table: "User",
-                field: "userId",
+                table: "Cart",
+                field: "cartId",
             },
             onDelete: "cascade",
             onUpdate: "cascade",
@@ -29,6 +29,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable("Order", "User_Order_userId_fk");
+        await queryInterface.dropTable("Cart", "User_Order_userId_fk");
     },
 };
