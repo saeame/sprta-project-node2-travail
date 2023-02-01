@@ -9,7 +9,7 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.addConstraint("Product-Cart", {
+        await queryInterface.addConstraint("Product-Order", {
             fields: ["orderId"],
             type: "foreign key",
             name: "User_Order_userId_fk",
