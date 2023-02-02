@@ -287,4 +287,5 @@ node_modules/
 
 
 .env
+/src/config/config.json
 /config/config.json

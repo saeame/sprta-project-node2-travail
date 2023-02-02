@@ -11,13 +11,13 @@ module.exports = {
             },
             address: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: Sequelize.STRING,
             },
 
             addressName: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: Sequelize.STRING,
             },
             name: {
@@ -30,7 +30,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 references: {
                     model: "User",
-                    field: "userId",
+                    key: "userId",
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
