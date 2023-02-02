@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("Product-Orders", {
-            productOrderId: {
+        await queryInterface.createTable("orderDetail", {
+            orderDetailId: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
@@ -12,14 +12,26 @@ module.exports = {
             productId: {
                 allowNull: false,
                 type: Sequelize.INTEGER,
+                references: {
+                    model: "Product",
+                    key: "productId",
+                },
+                onDelete: "cascade",
+                onUpdate: "cascade",
             },
             orderId: {
                 allowNull: false,
                 type: Sequelize.INTEGER,
+                references: {
+                    model: "Order",
+                    key: "orderId",
+                },
+                onDelete: "cascade",
+                onUpdate: "cascade",
             },
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("Product-Orders");
+        await queryInterface.dropTable("orderDetail");
     },
 };
