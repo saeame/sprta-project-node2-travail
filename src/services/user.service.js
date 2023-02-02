@@ -15,7 +15,7 @@ class UserService {
     const salt = createSalt();
     const hashPassword = crypto.createHash('sha512').update(password + salt).digest('base64');
 
-      const createdUser = await this.userRepository.signup();
+      const createdUser = await this.userRepository.signup({ email, password, phone });
       await this.addressRepository.create(address);
     } catch (err) {
       throw err;
