@@ -21,13 +21,13 @@ module.exports = (sequelize, DataTypes) => {
             },
             address: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: DataTypes.STRING,
             },
 
             addressName: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: DataTypes.STRING,
             },
 
