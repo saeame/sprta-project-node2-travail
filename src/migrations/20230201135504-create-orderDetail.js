@@ -14,7 +14,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 references: {
                     model: "Product",
-                    field: "productId",
+                    key: "productId",
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",
@@ -24,7 +24,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 references: {
                     model: "Order",
-                    field: "orderId",
+                    key: "orderId",
                 },
                 onDelete: "cascade",
                 onUpdate: "cascade",

@@ -11,7 +11,7 @@ module.exports = {
             },
             email: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: Sequelize.STRING,
             },
             password: {
@@ -20,7 +20,7 @@ module.exports = {
             },
             phone: {
                 allowNull: false,
-                uniqueKey: true,
+                unique: true,
                 type: Sequelize.INTEGER,
             },
             address: {
