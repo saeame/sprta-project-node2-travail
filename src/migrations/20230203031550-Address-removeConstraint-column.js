@@ -2,13 +2,8 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    return queryInterface.changeColumn('Address', 'addressName', {
-      allowNull: true,
-      unique: false,
-      type: Sequelize.STRING(50),
-      defaultValue: '기본주소'
-    })
+  async up (queryInterface, Sequelize) {
+    return queryInterface.removeConstraint('Address', 'addressName');
     /**
      * Add altering commands here.
      *
@@ -17,7 +12,7 @@ module.exports = {
      */
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
