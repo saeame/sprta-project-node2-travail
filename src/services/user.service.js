@@ -1,8 +1,9 @@
 const crypto = require('crypto');
 const UserRepository = require('../repositories/user.repository');
 const AddressRepository = require('../repositories/address.repository');
-const { CustomError } = require('../routes');
+const { CustomError } = require('../util/customError.util');
 const { User, Address } = require('../models');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 class UserService {
@@ -11,7 +12,6 @@ class UserService {
   signup = async ({ email, password, confirm, phone, address, name }) => {
     try {
       if (password !== confirm) {
-        const customError = new CustomError(400, '비밀번호가 일치하지 않습니다.');
         throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
       }
 
@@ -22,9 +22,8 @@ class UserService {
         +process.env.ITERATIONS,
         +process.env.KEYLEN,
         'sha512'
-        )
-        .toString('base64');
-        
+      ).toString('base64');
+
       const { dataValues: {
         userId,
         name: userName
@@ -37,10 +36,67 @@ class UserService {
     }
   }
 
-  getUser = async () => {
+  getUser = async (userId = undefined) => {
     try {
-      const userData = await this.userRepository.getUser();
+      const userData = await this.userRepository.getUser(userId);
+
       return userData;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  login = async ({ email, password }) => {
+    try {
+      const userData = await this.userRepository.findOne(email);
+
+      const salt = userData.salt;
+      const hashPassword = crypto.pbkdf2Sync(
+        password,
+        salt,
+        +process.env.ITERATIONS,
+        +process.env.KEYLEN,
+        'sha512'
+      ).toString('base64');
+
+      if (userData.password !== hashPassword) {
+        throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
+      }
+
+      const payload = {
+        userId: userData.userId,
+      }
+
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: '10m', },
+      );
+
+      return token;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  updateUser = async ({ email, password, address, phone }, userData) => {
+    try {
+      const { userId } = userData;
+      if (password !== undefined) {
+        const salt = userData.salt;
+        password = crypto.pbkdf2Sync(
+          password,
+          salt,
+          +process.env.ITERATIONS,
+          +process.env.KEYLEN,
+          'sha512'
+        ).toString('base64');
+      }
+
+      await this.userRepository.updateUser(email, password, phone, userId);
+
+      const addressRepository = new AddressRepository(Address);
+      // await addressRepository.updateAddress(address);
     } catch (err) {
       throw err;
     }

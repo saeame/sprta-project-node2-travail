@@ -14,16 +14,56 @@ class UserController {
 
   getUser = async (req, res, next) => {
     try {
-      const userData = await this.userService.getUser();
-      const allUser = userData.map((user) => {
+      let userData = await this.userService.getUser();
+
+      userData = userData.map((user) => {
         return {
           email: user.email,
           name: user.name,
           phone: user.phone,
         }
       })
-      console.log(allUser);
-      res.status(200).send(allUser);
+
+      res.status(200).send(userData);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  getUserDetail = async (req, res, next) => {
+    try {
+      const userId = +req.params.userId;
+      let userData = await this.userService.getUser(userId);
+
+      res.status(200).send({
+        email: userData.email,
+        name: userData.name,
+        phone: userData.phone,
+      })
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  login = async (req, res, next) => {
+    try {
+      const token = await this.userService.login(req.body);
+
+      const MIN = 1 * 1000 * 60;
+      const maxAge = 10 * MIN;
+
+      res.cookie('jwt', token, { maxAge }).status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  updateUser = async (req, res, next) => {
+    try {
+      await this.userService.updateUser(req.body, req.userData);
+
+
+      res.status(201).end();
     } catch (err) {
       next(err);
     }

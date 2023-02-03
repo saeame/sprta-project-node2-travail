@@ -1,18 +1,21 @@
-const express = require('express');
-
 const userRouter = require('./src/routes/user.routes');
 const productRouter = require('./src/routes/product.routes');
 
-const app = express();
-app.use(express.json());
-require('dotenv').config();
+const express = require("express");
+const cookieParser = require('cookie-parser');
+require("dotenv").config();
 
-app.use('/user', userRouter);
-app.use('/product', productRouter);
+const app = express();
+
+app.use(express.json());
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/user', userRouter);
+app.use('/product', productRouter);
 
 app.use((err, req, res, next) => {
   console.log({ err });
