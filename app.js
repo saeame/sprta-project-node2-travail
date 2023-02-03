@@ -1,4 +1,5 @@
 const userRouter = require('./src/routes/user.routes');
+const productRouter = require('./src/routes/product.routes');
 
 const express = require("express");
 const cookieParser = require('cookie-parser');
@@ -9,8 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
 app.use('/user', userRouter);

@@ -1,28 +1,30 @@
-const ProductService = require('../services/product.service.js');
+const ProductService = require('../services/product.service');
 
 class ProductController {
-  productService = new ProductService();
+  constructor() {
+    this.productService = new ProductService();
+  }
 
-  getAllProduct = async (req, res, next) => {
+  async getAllProduct(req, res, next) {
     try {
-      const data = await this.productService.getAllProduct();
+      const productData = await this.productService.getAllProduct();
 
-      res.status(200).json({ data });
+      res.status(200).json({ productData });
     } catch (error) {
-      res.status(error.status).json({ message: error.message });
+      next(error);
     }
-  };
+  }
 
-  getProduct = async (req, res, next) => {
+  async getProduct(req, res, next) {
     try {
       const { productId } = req.params;
       const data = await this.productService.getProduct(productId);
 
       res.status(200).json({ data });
     } catch (error) {
-      res.status(error.status).json({ message: error.message });
+      next(error);
     }
-  };
+  }
 }
 
 module.exports = ProductController;
