@@ -14,16 +14,32 @@ class UserController {
 
   getUser = async (req, res, next) => {
     try {
-      const userData = await this.userService.getUser();
-      const allUser = userData.map((user) => {
+      let userData = await this.userService.getUser();
+
+      userData = userData.map((user) => {
         return {
           email: user.email,
           name: user.name,
           phone: user.phone,
         }
       })
-      console.log(allUser);
-      res.status(200).send(allUser);
+
+      res.status(200).send(userData);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  getUserDetail = async (req, res, next) => {
+    try {
+      const userId = +req.params.userId;
+      let userData = await this.userService.getUser(userId);
+
+      res.status(200).send({
+        email: userData.email,
+        name: userData.name,
+        phone: userData.phone,
+      })
     } catch (err) {
       next(err);
     }

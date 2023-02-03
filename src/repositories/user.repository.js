@@ -14,15 +14,15 @@ class UserRepository {
     }
   }
 
-  getUser = async (userId = undefined) => {
+  getUser = async (userId) => {
     try {
       let userData;
-      userId = 13;
-      if (userId !== undefined) {
-        userData = this.model.findByPk(userId);
-      }
 
-      userData = await this.model.findAll();
+      if (userId !== undefined) {
+        userData = await this.model.findByPk(userId);
+      } else {
+        userData = await this.model.findAll();
+      }
 
       return userData;
     } catch (err) {
