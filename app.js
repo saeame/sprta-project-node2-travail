@@ -10,12 +10,12 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/user', userRouter);
-app.use('/product', productRouter);
-
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+app.use('/user', userRouter);
+app.use('/product', productRouter);
 
 app.use((err, req, res, next) => {
   console.log({ err });

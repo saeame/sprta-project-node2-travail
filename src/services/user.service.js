@@ -62,7 +62,7 @@ class UserService {
       if (userData.password !== hashPassword) {
         throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
       }
-      
+
       const payload = {
         userId: userData.userId,
       }
@@ -72,8 +72,31 @@ class UserService {
         process.env.JWT_SECRET,
         { expiresIn: '10m', },
       );
-      
+
       return token;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  updateUser = async ({ email, password, address, phone }, userData) => {
+    try {
+      const { userId } = userData;
+      if (password !== undefined) {
+        const salt = userData.salt;
+        password = crypto.pbkdf2Sync(
+          password,
+          salt,
+          +process.env.ITERATIONS,
+          +process.env.KEYLEN,
+          'sha512'
+        ).toString('base64');
+      }
+
+      await this.userRepository.updateUser(email, password, phone, userId);
+
+      const addressRepository = new AddressRepository(Address);
+      // await addressRepository.updateAddress(address);
     } catch (err) {
       throw err;
     }

@@ -52,7 +52,7 @@ class UserController {
       const MIN = 1 * 1000 * 60;
       const maxAge = 10 * MIN;
 
-      res.cookie('JWT', token, { maxAge }).status(200).end();
+      res.cookie('jwt', token, { maxAge }).status(200).end();
     } catch (err) {
       next(err);
     }
@@ -60,8 +60,10 @@ class UserController {
 
   updateUser = async (req, res, next) => {
     try {
-      res.status(200).send('updateUser');
-      // res.status(200).end();
+      await this.userService.updateUser(req.body, req.userData);
+
+
+      res.status(201).end();
     } catch (err) {
       next(err);
     }

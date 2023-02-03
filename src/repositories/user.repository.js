@@ -28,7 +28,7 @@ class UserRepository {
       if (userData === null) {
         throw new CustomError(400, '해당 유저가 없습니다.');
       }
-      
+
       return userData;
     } catch (err) {
       throw err;
@@ -42,10 +42,18 @@ class UserRepository {
       if (userData === null) {
         throw new CustomError(400, '해당 유저가 없습니다.');
       }
-      
+
       return userData;
     } catch (err) {
       throw (err);
+    }
+  }
+
+  updateUser = async (email, password, phone, userId) => {
+    try {
+      await this.model.update({ email, password, phone }, { where: { userId } });
+    } catch (err) {
+      throw err;
     }
   }
 }
