@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const ProductController = require('../controllers/product.controller.js');
+const ProductController = require('../controllers/product.controller');
 const productController = new ProductController();
 
 /* 전체 공개 */

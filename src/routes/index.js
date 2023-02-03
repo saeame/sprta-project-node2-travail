@@ -1,11 +1,19 @@
 class CustomError extends Error {
-  code = 0
-  message = ''
+  code = 0;
+  message = '';
   constructor(code, message) {
     super();
     this.code = code;
     this.message = message;
   }
 }
+const express = require('express');
+const router = express.Router();
 
-module.exports = {CustomError};
+const productRouter = require('./product.routes.js');
+
+router.use('/product', productRouter);
+
+module.exports = router;
+
+module.exports = { CustomError };
