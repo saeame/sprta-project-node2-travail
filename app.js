@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 require("dotenv").config();
 
-app.use('/users', userRouter);
+app.use('/user', userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 
 app.use((err, req, res, next) => {
   console.log({ err });
+  err.code = err.code || 400;
   res.status(err.code).send({ errorMessage: err.message });
 })
 
