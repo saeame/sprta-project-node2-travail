@@ -1,4 +1,5 @@
 const { Address } = require('../models');
+const { CustomError } = require('../util/customError.util');
 class UserRepository {
   constructor(model) {
     this.model = model;
@@ -24,6 +25,10 @@ class UserRepository {
         userData = await this.model.findAll();
       }
 
+      if (userData === null) {
+        throw new CustomError(400, '해당 유저가 없습니다.');
+      }
+      
       return userData;
     } catch (err) {
       throw err;
@@ -33,6 +38,10 @@ class UserRepository {
   findOne = async (email) => {
     try {
       const userData = await this.model.findOne({ where: { email } });
+
+      if (userData === null) {
+        throw new CustomError(400, '해당 유저가 없습니다.');
+      }
       
       return userData;
     } catch (err) {

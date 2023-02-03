@@ -58,6 +58,14 @@ class UserController {
     }
   }
 
+  updateUser = async (req, res, next) => {
+    try {
+      res.status(200).send('updateUser');
+      // res.status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UserController;
