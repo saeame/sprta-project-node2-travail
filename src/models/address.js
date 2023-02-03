@@ -1,5 +1,5 @@
 "use strict";
-const {Model} = require("sequelize");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class Address extends Model {
         /**
@@ -21,24 +21,31 @@ module.exports = (sequelize, DataTypes) => {
             },
             address: {
                 allowNull: false,
-                unique: true,
+                unique: false,
                 type: DataTypes.STRING,
             },
 
             addressName: {
                 allowNull: false,
-                unique: true,
+                unique: false,
                 type: DataTypes.STRING,
+                defaultValue: '기본주소',
             },
 
             name: {
                 allowNull: false,
                 type: DataTypes.STRING,
             },
+            userId: {
+                allowNull: false,
+                type: DataTypes.INTEGER,
+            },
         },
         {
             sequelize,
+            tableName: 'Address',
             modelName: "Address",
+            timestamps: false,
         }
     );
     return Address;
