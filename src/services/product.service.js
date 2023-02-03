@@ -1,9 +1,11 @@
-const ProductRepository = require('../repositories/product.repository.js');
+const ProductRepository = require('../repositories/product.repository');
 
 class ProductService {
-  productRepository = new ProductRepository();
+  constructor() {
+    this.productRepository = new ProductRepository();
+  }
 
-  getAllProduct = async () => {
+  async getAllProduct() {
     try {
       const data = await this.productRepository.getAllProduct();
 
@@ -11,9 +13,9 @@ class ProductService {
     } catch (error) {
       throw error;
     }
-  };
+  }
 
-  getProduct = async (productId) => {
+  async getProduct(productId) {
     try {
       const data = await this.productRepository.getProduct(productId);
 
@@ -21,7 +23,7 @@ class ProductService {
     } catch (error) {
       throw error;
     }
-  };
+  }
 }
 
 module.exports = ProductService;
