@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const UserRepository = require('../repositories/user.repository');
 const AddressRepository = require('../repositories/address.repository');
-const { CustomError } = require('../routes');
+const { CustomError } = require('../util/customError.util');
 const { User, Address } = require('../models');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
