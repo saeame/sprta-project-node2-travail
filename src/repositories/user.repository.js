@@ -13,6 +13,22 @@ class UserRepository {
       throw err;
     }
   }
+
+  getUser = async (userId = undefined) => {
+    try {
+      let userData;
+      userId = 13;
+      if (userId !== undefined) {
+        userData = this.model.findByPk(userId);
+      }
+
+      userData = await this.model.findAll();
+
+      return userData;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = UserRepository;
