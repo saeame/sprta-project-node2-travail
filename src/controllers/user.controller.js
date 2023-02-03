@@ -16,9 +16,8 @@ class UserController {
 
   signup = async (req, res) => {
     try {
-      const { email, password, confirm, address, phone } = req.body;
       await this.userService.signup(req.body);
-      
+      res.status(201).end();
     } catch (err) {
       console.log({ err });
       res.status(err.code).send({ message: err.message });

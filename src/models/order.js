@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             isCancel: {
                 allowNull: false,
-                type: DataTypes.boolean,
+                type: DataTypes.BOOLEAN,
             },
             orderStatus: {
                 allowNull: false,

@@ -4,9 +4,9 @@ class UserRepository {
     this.model = model;
   }
 
-  signup = async ({ email, password, phone }) => {
+  signup = async ({ email, hashPassword, phone, salt, name }) => {
     try {
-      const createdUser = await this.model.create({ email, password, phone });
+      const createdUser = await this.model.create({ email, password: hashPassword, phone, salt, name });
 
       return createdUser;
     } catch (err) {
