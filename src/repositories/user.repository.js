@@ -29,6 +29,16 @@ class UserRepository {
       throw err;
     }
   }
+
+  findOne = async (email) => {
+    try {
+      const userData = await this.model.findOne({ where: { email } });
+      
+      return userData;
+    } catch (err) {
+      throw (err);
+    }
+  }
 }
 
 module.exports = UserRepository;
