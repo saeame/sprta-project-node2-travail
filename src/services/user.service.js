@@ -11,7 +11,6 @@ class UserService {
   signup = async ({ email, password, confirm, phone, address, name }) => {
     try {
       if (password !== confirm) {
-        const customError = new CustomError(400, '비밀번호가 일치하지 않습니다.');
         throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
       }
 
@@ -22,9 +21,9 @@ class UserService {
         +process.env.ITERATIONS,
         +process.env.KEYLEN,
         'sha512'
-        )
+      )
         .toString('base64');
-        
+
       const { dataValues: {
         userId,
         name: userName
@@ -37,9 +36,14 @@ class UserService {
     }
   }
 
-  getUser = async () => {
+  getUser = async (userId = undefined) => {
     try {
-      const userData = await this.userRepository.getUser();
+      const userData = await this.userRepository.getUser(userId);
+
+      if (userData === null) {
+        throw new CustomError(400, '해당 유저가 없습니다.');
+      }
+      
       return userData;
     } catch (err) {
       throw err;
