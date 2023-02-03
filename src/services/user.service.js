@@ -40,10 +40,6 @@ class UserService {
     try {
       const userData = await this.userRepository.getUser(userId);
 
-      if (userData === null) {
-        throw new CustomError(400, '해당 유저가 없습니다.');
-      }
-
       return userData;
     } catch (err) {
       throw err;
@@ -53,10 +49,6 @@ class UserService {
   login = async ({ email, password }) => {
     try {
       const userData = await this.userRepository.findOne(email);
-
-      if (userData === null) {
-        throw new CustomError(400, '해당 유저가 없습니다.');
-      }
 
       const salt = userData.salt;
       const hashPassword = crypto.pbkdf2Sync(
@@ -68,7 +60,7 @@ class UserService {
       ).toString('base64');
 
       if (userData.password !== hashPassword) {
-        throw new CustomError(400, '비밀번호가 틀립니다.');
+        throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
       }
       
       const payload = {
