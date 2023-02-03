@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
 
 app.use((err, req, res, next) => {
   console.log({ err });
-  err.code = err.code || 400;
-  res.status(err.code).send({ errorMessage: err.message });
+  err.status = err.status || 400;
+  res.status(err.status).send({ errorMessage: err.message });
 })
 
 app.listen(process.env.PORT, () => {
