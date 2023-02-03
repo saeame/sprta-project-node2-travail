@@ -3,6 +3,7 @@ const UserRepository = require('../repositories/user.repository');
 const AddressRepository = require('../repositories/address.repository');
 const { CustomError } = require('../routes');
 const { User, Address } = require('../models');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 class UserService {
@@ -21,8 +22,7 @@ class UserService {
         +process.env.ITERATIONS,
         +process.env.KEYLEN,
         'sha512'
-      )
-        .toString('base64');
+      ).toString('base64');
 
       const { dataValues: {
         userId,
@@ -43,8 +43,45 @@ class UserService {
       if (userData === null) {
         throw new CustomError(400, '해당 유저가 없습니다.');
       }
-      
+
       return userData;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  login = async ({ email, password }) => {
+    try {
+      const userData = await this.userRepository.findOne(email);
+
+      if (userData === null) {
+        throw new CustomError(400, '해당 유저가 없습니다.');
+      }
+
+      const salt = userData.salt;
+      const hashPassword = crypto.pbkdf2Sync(
+        password,
+        salt,
+        +process.env.ITERATIONS,
+        +process.env.KEYLEN,
+        'sha512'
+      ).toString('base64');
+
+      if (userData.password !== hashPassword) {
+        throw new CustomError(400, '비밀번호가 틀립니다.');
+      }
+      
+      const payload = {
+        userId: userData.userId,
+      }
+
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        { expiresIn: '10m', },
+      );
+      
+      return token;
     } catch (err) {
       throw err;
     }

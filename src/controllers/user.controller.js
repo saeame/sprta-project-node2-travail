@@ -44,6 +44,20 @@ class UserController {
       next(err);
     }
   }
+
+  login = async (req, res, next) => {
+    try {
+      const token = await this.userService.login(req.body);
+
+      const MIN = 1 * 1000 * 60;
+      const maxAge = 10 * MIN;
+
+      res.cookie('JWT', token, { maxAge }).status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
+
 }
 
 module.exports = UserController;
