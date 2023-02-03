@@ -5,24 +5,20 @@ class ProductController {
     this.productService = new ProductService();
   }
 
-  async getAllProduct(req, res, next) {
-    try {
-      const productData = await this.productService.getAllProduct();
 
-      res.status(200).json({ productData });
-    } catch (error) {
-      next(error);
-    }
-  }
+  getAllProduct = async (req, res, next) => {
+    const products = await this.productService.getAllProduct();
+    res.status(200).json({ products });
+  };
 
   async getProduct(req, res, next) {
     try {
-      const { productId } = req.params;
-      const data = await this.productService.getProduct(productId);
 
-      res.status(200).json({ data });
-    } catch (error) {
-      next(error);
+      let { productId } = req.params;
+      const productDetail = await this.productService.getProduct(productId);
+      res.json({ data: productDetail });
+    } catch (err) {
+      next(err);
     }
   }
 }

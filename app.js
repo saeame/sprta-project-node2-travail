@@ -19,9 +19,9 @@ app.use('/product', productRouter);
 
 app.use((err, req, res, next) => {
   console.log({ err });
-  err.status = err.status || 400;
-  res.status(err.status).send({ errorMessage: err.message });
-})
+  err.code = err.code || 400;
+  res.status(err.code).send({ errorMessage: err.message });
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`http://127.0.0.1:${process.env.PORT}`);
