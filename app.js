@@ -1,12 +1,14 @@
 const express = require('express');
 
 const userRouter = require('./src/routes/user.routes');
+const productRouter = require('./src/routes/product.routes');
 
 const app = express();
 app.use(express.json());
 require('dotenv').config();
 
 app.use('/user', userRouter);
+app.use('/product', productRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
