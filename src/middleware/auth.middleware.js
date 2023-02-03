@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
     req.userData = userData;
     next();
   } catch (err) {
-    throw err;
+    next(err);
   }
 }
 
