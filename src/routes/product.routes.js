@@ -10,7 +10,7 @@ router.get('/', productController.getAllProduct);
 router.get('/:productId', productController.getProduct);
 //상품등록
 router.post('/admin/:productId', productController.createProduct);
-//상품수정
+//상품수정 (check)
 // router.patch('/admin/:productId', ProductController.editProduct);
 //상품삭제
 router.delete('/admin/:productId', productController.removeProduct);
