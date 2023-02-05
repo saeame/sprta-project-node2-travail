@@ -15,7 +15,17 @@ class OrderController {
 
   getOrders = async (req, res, next) => {
     try {
-      const orderData = await this.orderService.getOrders(req.userData.userId);
+      const orders = await this.orderService.getOrders(req.userData.userId);
+      res.status(200).send(orders);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  getOrderDetail = async (req, res, next) => {
+    try {
+      const orderData = await this.orderService.getOrderDetail(req.params.orderId, req.userData.userId);
+
       res.status(200).send(orderData);
     } catch (err) {
       next(err);

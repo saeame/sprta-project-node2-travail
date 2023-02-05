@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Order, orderDetail }) {
       Order.hasMany(orderDetail, {
-        foreignKey: 'orderId'
+        foreignKey: 'orderId',
+        as: 'od'
       })
       // define association here
     }
