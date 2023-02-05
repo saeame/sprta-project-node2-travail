@@ -10,6 +10,8 @@ router.post("/address/addnew/:userId", addressController.addnewAddress);
 //회원 주소조회
 router.get("/address/:userId", addressController.getAddress);
 
+router.get("address/:userId/:addressId", addressController.getthisAddress);
+
 //회원 주소수정
 router.patch("/address/:userId", addressController.editAddress);
 

@@ -26,7 +26,7 @@ class AddressRepository {
                 },
                 {raw: true}
             );
-            console.log(newAddressData);
+            // console.log(newAddressData);
             return {
                 status: 200,
                 success: true,
@@ -34,36 +34,43 @@ class AddressRepository {
             };
         } catch (error) {
             error.name = "Database Error";
-            error.message = "요청을 처리하지 못했습니다.";
+            // error.message = "요청을 처리하지 못했습니다.";
             error.status = 400;
             throw error;
         }
     };
 
     // 해당 userId의 주소 찾기
-    findAddress = async (userId) => {
-        try {
-            const findAddress = await this.addressModel.findOne({where: {id: userId}});
-            return findAddress;
-        } catch (error) {
-            // DB에서 발생한 Error
-            error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
-            error.status = 400;
-            throw error;
-        }
-    };
+    // findAddress = async (userId) => {
+    //     try {
+    //         console.log("!!");
+    //         const findAddress = await this.addressModel.findOne({where: {userId: userId}});
+    //         return findAddress;
+    //     } catch (error) {
+    //         // DB에서 발생한 Error
+    //         console.log(error);
+    //         error.name = "Database Error";
+    //         // error.message = "요청을 처리하지 못하였습니다.";
+    //         error.status = 400;
+    //         throw error;
+    //     }
+    // };
 
     getAddress = async (userId) => {
-        // console.log(userId);
         try {
+            // const existingAddress = await this.addressModel.findAll({
+            //     attributes: ["address", "addressName", "name"],
+            //     where: {userId},
+            // });
+
             const existingAddress = await this.addressModel.findAll({
-                attributes: ["address", "addressName", "name"],
-                where: {userId},
+                address: [["address", "addressName", "name"]],
+                where: {userId: userId},
+                raw: true,
             });
-            console.log(existingAddress);
-            return {existingAddress};
+            return existingAddress;
         } catch (error) {
+            console.log(error);
             error.name = "Database Error";
             // error.message = "요청을 처리하지 못하였습니다.";
             error.status = 400;
@@ -85,7 +92,7 @@ class AddressRepository {
     };
     deleteAddress = async (addressId) => {
         try {
-            await addressModels.destroy({where: {id: addressId}});
+            await addressModel.destroy({where: {id: addressId}});
             return {status: 200, success: true, message: "주소가 삭제되었습니다."};
         } catch (error) {
             error.name = "Database Error";

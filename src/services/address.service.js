@@ -12,6 +12,9 @@ class AddressService {
         // 윗줄로 배열 완성! /
         // 하나하나 배열을 돌면서 현재 들어와있는 바디값이랑 비교해보기
         //
+
+        // ---------------------------------------------------------------------
+
         //2. 그 주소들과 현재값을 비교해서 이미 존재하는 주소, 주소이름이 없을 때만 아래 함수 실행
         // const
 
@@ -33,13 +36,13 @@ class AddressService {
     };
 
     getAddress = async (userId) => {
-        const {existingAddress} = await this.addressRepository.getAddress(userId);
-        // console.log({existingAddress});
-        const theirAddress = existingAddress.map(({address, addressName, name}) => {
+        const existingAddress = await this.addressRepository.getAddress(userId);
+        console.log(existingAddress);
+        const theirAddress = existingAddress.map((address) => {
             return {
-                address,
-                addressName,
-                name,
+                address: address.address,
+                addressName: address.addressName,
+                name: address.name,
             };
         });
         if (theirAddress.length === 0) {
