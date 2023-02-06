@@ -30,7 +30,7 @@ class UserService {
       } } = await this.userRepository.signup({ email, hashPassword, phone, salt, name });
 
       const addressRepository = new AddressRepository(User, Address);
-      await addressRepository.createAddress(userId, address, '집', userName);
+      await addressRepository.createAddress(userId, address, '기본주소', userName);
     } catch (err) {
       throw err;
     }
@@ -69,8 +69,8 @@ class UserService {
 
       await this.userRepository.updateUser(email, password, phone, userId);
 
-      const addressRepository = new AddressRepository(Address);
-      // await addressRepository.updateAddress(address);
+      const addressRepository = new AddressRepository(User, Address);
+      await addressRepository.editAddress(userId, address, '기본주소', userData.name);
     } catch (err) {
       throw err;
     }
