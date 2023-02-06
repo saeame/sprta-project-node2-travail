@@ -30,25 +30,69 @@ class OrderService {
 
   getOrders = async (userId) => {
     try {
-      const [orderData] = await sequelize.query(`
-        select
-          p.name,
-          p.photo,
-          p.description,
-          p.createdAt
-        from
-          orderDetail od
-          inner join travail.Order as o on od.orderId = o.orderId
-          inner join Product p on od.productId = p.ProductId
-        where
-          o.userId = ${userId};
-      `)
+      // sequelize 활용 조인
+      const orders = await this.orderRepository.getOrders(userId);
 
-      if (orderData.length < 1) {
-        throw new CustomError(404, '주문목록이 업습니다.');
-      }
+      return orders.map(({
+        od: [od],
+        createdAt,
+      }) => {
+        return {
+          orderDetailId: od.orderDetailId,
+          name: od.p.name,
+          photo: od.p.photo,
+          description: od.p.description,
+          createdAt,
+        }
+      })
 
-      return orderData.map(order=>order);
+      // SQL query 활용 조인
+      // const [orders] = await sequelize.query(`
+      //   select
+      //     p.name,
+      //     p.photo,
+      //     p.description,
+      //     p.createdAt
+      //   from
+      //     orderDetail od
+      //     inner join travail.Order as o on od.orderId = o.orderId
+      //     inner join Product p on od.productId = p.ProductId
+      //   where
+      //     o.userId = ${userId};
+      // `)
+
+      // if (orders.length < 1) {
+      //   throw new CustomError(404, '주문목록이 없습니다.');
+      // }
+
+      // return orders.map(order => order);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getOrderDetail = async (orderId, userId) => {
+    try {
+      const orders = await this.orderRepository.getOrders(userId);
+
+      return orders.filter((
+        { od: [od] }) => od.orderDetailId === +orderId)
+        .map(({
+          orderId,
+          shipment,
+          od: [od],
+          // createdAt,
+        }) => {
+          return {
+            orderId,
+            name: od.p.name,
+            photo: od.p.photo,
+            description: od.p.description,
+            shipment,
+            // createdAt,
+            // orderDetailId: od.orderDetailId,
+          };
+        });
     } catch (err) {
       throw err;
     }
