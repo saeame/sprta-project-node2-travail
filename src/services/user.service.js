@@ -29,8 +29,8 @@ class UserService {
         name: userName
       } } = await this.userRepository.signup({ email, hashPassword, phone, salt, name });
 
-      const addressRepository = new AddressRepository(Address);
-      await addressRepository.addAddress({ address, name: userName, userId });
+      const addressRepository = new AddressRepository(User, Address);
+      await addressRepository.createAddress(userId, address, '집', userName);
     } catch (err) {
       throw err;
     }
@@ -79,7 +79,7 @@ class UserService {
   deleteUser = async (userId) => {
     try {
       await this.userRepository.deleteUser(userId);
-      
+
     } catch (err) {
       throw err;
     }
