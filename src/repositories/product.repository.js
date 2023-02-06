@@ -23,6 +23,24 @@ class ProductRepository {
       ],
     });
   }
+  async createProduct(name, photo, price, quantity, active, description) {
+    await Product.create({
+      name,
+      photo,
+      price,
+      quantity,
+      active,
+      description,
+    });
+  }
+
+  async removeProduct(productId) {
+    try {
+      await Product.destroy({ where: { productId } });
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductRepository;

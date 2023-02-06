@@ -2,9 +2,9 @@ const userRouter = require('./src/routes/user.routes');
 const productRouter = require('./src/routes/product.routes');
 const orderRouter = require('./src/routes/order.routes');
 
-const express = require("express");
+const express = require('express');
 const cookieParser = require('cookie-parser');
-require("dotenv").config();
+require('dotenv').config();
 
 const app = express();
 

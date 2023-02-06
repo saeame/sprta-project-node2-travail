@@ -19,6 +19,31 @@ class ProductController {
       next(err);
     }
   };
+  createProduct = async (req, res) => {
+    const { name, photo, price, quantity, active, description } = req.body;
+
+    await this.productService.createProduct(
+      name,
+      photo,
+      price,
+      quantity,
+      active,
+      description
+    );
+
+    res.status(201).json({ message: '상품이 정상적으로 등록되었습니다.' });
+  };
+
+  removeProduct = async (req, res, next) => {
+    try {
+      const productId = +req.params.productId;
+      await this.productService.removeProduct(productId);
+
+      res.status(200).json({ message: '상품이 정상적으로 삭제되었습니다.' });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = ProductController;

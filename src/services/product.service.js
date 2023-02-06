@@ -24,6 +24,26 @@ class ProductService {
       throw error;
     }
   }
+  async createProduct(name, photo, price, quantity, active, description) {
+    await this.productRepository.createProduct(
+      name,
+      photo,
+      price,
+      quantity,
+      active,
+      description
+    );
+
+    return;
+  }
+
+  async removeProduct(productId) {
+    try {
+      await this.productRepository.removeProduct(productId);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductService;
