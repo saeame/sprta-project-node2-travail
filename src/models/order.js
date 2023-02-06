@@ -1,6 +1,5 @@
 'use strict';
 const { Model } = require('sequelize');
-const { Sequelize } = require('.');
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -8,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ Order, orderDetail }) {
+      Order.hasMany(orderDetail, {
+        foreignKey: 'orderId'
+      })
       // define association here
     }
   }
@@ -32,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 
       payment: {
         allowNull: true,
-        defaultValue:'결제방법 미정',
+        defaultValue: '결제방법 미정',
         type: DataTypes.CHAR,
       },
       shipment: {
@@ -42,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isCancel: {
         allowNull: true,
-        defaultValue:false,
+        defaultValue: false,
         type: DataTypes.BOOLEAN,
       },
       createdAt: {

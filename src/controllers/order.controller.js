@@ -12,6 +12,15 @@ class OrderController {
       next(err);
     }
   }
+
+  getOrders = async (req, res, next) => {
+    try {
+      const orderData = await this.orderService.getOrders(req.userData.userId);
+      res.status(200).send(orderData);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = OrderController;

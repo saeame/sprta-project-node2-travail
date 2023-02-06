@@ -1,3 +1,5 @@
+const { orderDetail, Product } = require('../models');
+const CustomError = require('../util/customError.util');
 class OrderRepository {
   constructor(model) {
     this.model = model;
