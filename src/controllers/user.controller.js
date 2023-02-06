@@ -45,19 +45,6 @@ class UserController {
     }
   }
 
-  login = async (req, res, next) => {
-    try {
-      const token = await this.userService.login(req.body);
-
-      const MIN = 1 * 1000 * 60;
-      const maxAge = 10 * MIN;
-
-      res.cookie('jwt', token, { maxAge }).status(200).end();
-    } catch (err) {
-      next(err);
-    }
-  }
-
   updateUser = async (req, res, next) => {
     try {
       await this.userService.updateUser(req.body, req.userData);
@@ -75,6 +62,30 @@ class UserController {
       await this.userService.deleteUser(userId);
       
       res.status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  login = async (req, res, next) => {
+    try {
+      const token = await this.userService.login(req.body);
+  
+      const MIN = 1 * 1000 * 60;
+      const maxAge = 10 * MIN;
+  
+      res.cookie('jwt', token, { maxAge }).status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  logout = async (req, res, next) => {
+    try {
+      const { userId } = req.userData;
+      await this.userService.logout(userId);
+      
+      res.clearCookie('jwt').status(200).send('logout');
     } catch (err) {
       next(err);
     }
