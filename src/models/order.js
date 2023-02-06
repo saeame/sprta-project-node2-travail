@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const { Sequelize } = require('.');
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -30,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       payment: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue:'결제방법 미정',
         type: DataTypes.CHAR,
       },
       shipment: {
@@ -39,12 +41,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       isCancel: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue:false,
         type: DataTypes.BOOLEAN,
-      },
-      orderStatus: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: true,
@@ -54,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Order',
+      tableName: 'Order',
+      timestamps: false,
     }
   );
   return Order;
