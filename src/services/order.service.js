@@ -5,6 +5,8 @@ const OrderDetailRepository = require('../repositories/orderDetail.repository');
 const { Order, Address, orderDetail, Product, sequelize } = require('../models');
 const { CustomError } = require('../util/customError.util');
 
+const crypto = require('crypto');
+
 class OrderService {
   orderRepository = new OrderRepository(Order);
 
@@ -71,12 +73,12 @@ class OrderService {
     }
   }
 
-  getOrderDetail = async (orderId, userId) => {
+  getOrderDetail = async (orderDetailId, userId) => {
     try {
       const orders = await this.orderRepository.getOrders(userId);
 
       return orders.filter((
-        { od: [od] }) => od.orderDetailId === +orderId)
+        { od: [od] }) => od.orderDetailId === +orderDetailId)
         .map(({
           orderId,
           shipment,
@@ -93,6 +95,29 @@ class OrderService {
             // orderDetailId: od.orderDetailId,
           };
         });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  deleteOrder = async (orderId, password, userData) => {
+    try {
+      const salt = userData.salt;
+      password = crypto.pbkdf2Sync(
+        password,
+        salt,
+        +process.env.ITERATIONS,
+        +process.env.KEYLEN,
+        'sha512'
+      ).toString('base64');
+
+      // 비밀번호 체크
+      if (password !== userData.password) {
+        throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
+      }
+
+      await this.orderRepository.deleteOrder(orderId);
+
     } catch (err) {
       throw err;
     }

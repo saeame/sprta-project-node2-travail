@@ -57,6 +57,19 @@ class OrderRepository {
       throw err;
     }
   }
+
+  deleteOrder = async (orderId) => {
+    try {
+      const isSuccess = await this.model.destroy({ where: { orderId } });
+      
+      if (isSuccess < 1) {
+        throw new CustomError(404, '주문목록이 없습니다.');
+      }
+    }catch(err){
+      throw err;
+    }
+  }
+  
 }
 
 module.exports = OrderRepository;
