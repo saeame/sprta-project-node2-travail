@@ -26,7 +26,7 @@ class UserRepository {
       }
 
       if (userData === null) {
-        throw new CustomError(400, '해당 유저가 없습니다.');
+        throw new CustomError(404, '해당 유저가 없습니다.');
       }
 
       return userData;
@@ -40,7 +40,7 @@ class UserRepository {
       const userData = await this.model.findOne({ where: { email } });
 
       if (userData === null) {
-        throw new CustomError(400, '해당 유저가 없습니다.');
+        throw new CustomError(404, '해당 유저가 없습니다.');
       }
 
       return userData;
@@ -56,6 +56,15 @@ class UserRepository {
       throw err;
     }
   }
+
+  deleteUser = async (userId) => {
+    try {
+      await this.model.destroy({ where: { userId } });
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }
 
 module.exports = UserRepository;
