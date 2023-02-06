@@ -4,10 +4,20 @@ const router = require('express').Router();
 
 const userController = new UserController();
 
+// 회원가입
 router.post('/', userController.signup);
+// 유저 전체 조회
 router.get('/', userController.getUser);
+// userId 사용자 조회
 router.get('/:userId', userController.getUserDetail);
-router.post('/login', userController.login);
+// userId 사용자 수정
 router.patch('/:userId', authMiddleware, userController.updateUser);
+// userId 사용자 삭제
+router.delete('/:userId', authMiddleware, userController.deleteUser);
+
+// 로그인
+router.post('/login', userController.login);
+// 로그아웃
+router.post('/logout', authMiddleware, userController.logout);
 
 module.exports = router;

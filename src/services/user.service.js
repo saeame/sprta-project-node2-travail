@@ -46,6 +46,45 @@ class UserService {
     }
   }
 
+  updateUser = async ({ email, password, address, phone }, userData) => {
+    try {
+      const { userId } = userData;
+
+      // 비밀번호 변경시
+      if (password !== undefined) {
+        const salt = userData.salt;
+        password = crypto.pbkdf2Sync(
+          password,
+          salt,
+          +process.env.ITERATIONS,
+          +process.env.KEYLEN,
+          'sha512'
+        ).toString('base64');
+
+        // 비밀번호 체크
+        if (password !== userData.password) {
+          throw new CustomError(400, '비밀번호가 일치하지 않습니다.');
+        }
+      }
+
+      await this.userRepository.updateUser(email, password, phone, userId);
+
+      const addressRepository = new AddressRepository(Address);
+      // await addressRepository.updateAddress(address);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  deleteUser = async (userId) => {
+    try {
+      await this.userRepository.deleteUser(userId);
+      
+    } catch (err) {
+      throw err;
+    }
+  }
+
   login = async ({ email, password }) => {
     try {
       const userData = await this.userRepository.findOne(email);
@@ -79,24 +118,9 @@ class UserService {
     }
   }
 
-  updateUser = async ({ email, password, address, phone }, userData) => {
+  logout = async (userId) => {
     try {
-      const { userId } = userData;
-      if (password !== undefined) {
-        const salt = userData.salt;
-        password = crypto.pbkdf2Sync(
-          password,
-          salt,
-          +process.env.ITERATIONS,
-          +process.env.KEYLEN,
-          'sha512'
-        ).toString('base64');
-      }
-
-      await this.userRepository.updateUser(email, password, phone, userId);
-
-      const addressRepository = new AddressRepository(Address);
-      // await addressRepository.updateAddress(address);
+      await this.userRepository.getUser(userId);
     } catch (err) {
       throw err;
     }

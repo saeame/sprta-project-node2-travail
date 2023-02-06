@@ -1,5 +1,6 @@
 const userRouter = require('./src/routes/user.routes');
 const productRouter = require('./src/routes/product.routes');
+const orderRouter = require('./src/routes/order.routes');
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -16,11 +17,12 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter);
 app.use('/product', productRouter);
+app.use('/order', orderRouter);
 
 app.use((err, req, res, next) => {
   console.log({ err });
-  err.code = err.code || 400;
-  res.status(err.code).send({ errorMessage: err.message });
+  err.status = err.status || 400;
+  return res.status(err.status).send({ errorMessage: err.message });
 });
 
 app.listen(process.env.PORT, () => {

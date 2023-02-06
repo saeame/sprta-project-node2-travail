@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ Order, orderDetail }) {
+      Order.hasMany(orderDetail, {
+        foreignKey: 'orderId',
+        as: 'od'
+      })
       // define association here
     }
   }
@@ -30,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       payment: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue: '결제방법 미정',
         type: DataTypes.CHAR,
       },
       shipment: {
@@ -39,12 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
       },
       isCancel: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue: false,
         type: DataTypes.BOOLEAN,
-      },
-      orderStatus: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: true,
@@ -54,6 +56,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Order',
+      tableName: 'Order',
+      timestamps: false,
     }
   );
   return Order;
