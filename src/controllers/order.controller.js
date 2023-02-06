@@ -24,13 +24,23 @@ class OrderController {
 
   getOrderDetail = async (req, res, next) => {
     try {
-      const orderData = await this.orderService.getOrderDetail(req.params.orderId, req.userData.userId);
+      const orderData = await this.orderService.getOrderDetail(req.params.orderDetailId, req.userData.userId);
 
       res.status(200).send(orderData);
     } catch (err) {
       next(err);
     }
   }
+
+  deleteOrder = async (req, res, next) => {
+    try {
+      await this.orderService.deleteOrder(req.params.orderId, req.body.password, req.userData);
+      res.status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
+
 }
 
 module.exports = OrderController;
