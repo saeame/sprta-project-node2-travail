@@ -1,5 +1,5 @@
 "use strict";
-const {Model} = require("sequelize");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class Cart extends Model {
         /**
@@ -27,18 +27,17 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.INTEGER,
             },
-            productId: {
-                allowNull: true,
-                type: DataTypes.INTEGER,
-            },
             inPaid: {
-                allowNull: false,
+                allowNull: true,
+                defaultValue: false,
                 type: DataTypes.BOOLEAN,
             },
         },
         {
             sequelize,
             modelName: "Cart",
+            tableName: "Cart",
+            timestamps: false,
         }
     );
     return Cart;
