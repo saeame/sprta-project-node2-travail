@@ -14,14 +14,16 @@ router.get('/products', (req, res) => {
 });
 
 // 상품 상세페이지
+
 router.get('/products/:productId', (req, res) => {
   res.render('index.ejs', { components: 'currentProduct' });
-});
+
 
 //로그인페이지
 router.get('/login', authMiddleware, (req, res) => {
   res.render('login.ejs', { components: 'login' });
 });
+
 
 router.get('/register', (req, res, next) => {
   res.render('register.ejs', { components: 'register' });
@@ -47,7 +49,9 @@ router.get('/mypage', authMiddleware, (req, res) => {
 });
 
 // 장바구니
+
 router.get('/order/cart', (req, res) => {
+
   // 로그인이 안됐을 경우?
   if (!res.locals.user) {
     return res.render('login.ejs', {

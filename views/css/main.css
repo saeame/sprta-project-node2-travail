@@ -16,6 +16,7 @@
   flex-direction: column;
 }
 
+
 .product-item-image:hover {
   cursor: pointer;
 }
