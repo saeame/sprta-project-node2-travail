@@ -285,6 +285,8 @@ venv
 node_modules/
 .vs
 
+restClient/
+database/
 
 .env
 /src/config/config.json
