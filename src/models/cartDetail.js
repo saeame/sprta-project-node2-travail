@@ -1,5 +1,5 @@
 "use strict";
-const {Model} = require("sequelize");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class cartDetail extends Model {
         /**
@@ -7,8 +7,15 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
-            // define association here
+        static associate({ cartDetail, Product, Cart }) {
+            cartDetail.belongsTo(Product, {
+                foreignKey: 'productId',
+                as: 'p',
+            });
+            cartDetail.belongsTo(Cart, {
+                foreignKey: 'cartId',
+                as: 'c',
+            });
         }
     }
     cartDetail.init(

@@ -11,6 +11,17 @@ class CartController{
       next(err);
     }
   }
+
+  getCarts = async (req, res, next) => {
+    try {
+      const carts = await this.cartService.getCarts(req.userData.userId);
+      
+      res.status(200).send(carts);
+      // res.status(200).end();
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = CartController;
