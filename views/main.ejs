@@ -1,0 +1,45 @@
+<div>
+  <img class="main-banner" src="./image/main/mainbanner.png" />
+</div>
+<div id="mainItems"></div>
+<div id="pagination">
+  <% for (let i = 1; i <= 5; i++) { %>
+  <button class="pageBtn" onclick="changePage(event)"><%= i %></button>
+  <% } %>
+</div>
+
+<script>
+  let page = 1;
+  const per = 12;
+
+  getMain();
+  function getMain() {
+    $.ajax({
+      type: 'GET',
+      url: 'http://localhost:3000/product',
+      data: {},
+      success: function (response) {
+        console.log(response.products);
+        const productArray = response.products;
+
+        productArray.slice(per * (page - 1), per * page).forEach((product) => {
+          const productElement = `<div class="product-item">
+                <div class="product-item-image">${product.productId}</div>
+                <div class="product-des">상품명 : ${product.name}</div>
+                <div class="product-des">가격 : ${product.price}</div>
+            </div>`;
+
+          $('#mainItems').append(productElement);
+        });
+      },
+    });
+  }
+
+  function changePage(event) {
+    console.log(event.target.textContent);
+    const mainItems = document.getElementById('mainItems');
+    mainItems.textContent = '';
+    page = Number(event.target.textContent);
+    getMain();
+  }
+</script>
