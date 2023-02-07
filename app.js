@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter);
 app.use('/product', productRouter);
-app.use('/order', orderRouter);
 app.use('/order/cart', cartRouter);
+app.use('/order', orderRouter);
 
 
 app.use((err, req, res, next) => {
