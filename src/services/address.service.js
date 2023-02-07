@@ -14,7 +14,6 @@ class AddressService {
             // const {address} = existingAddress.address
 
             for (let i = 0; i < existingAddress.length; i++) {
-                console.log(existingAddress[i].address);
                 if (existingAddress[i].address === address) {
                     const error = new Error("이미 등록된 주소입니다.");
                     error.name = "Already exist";
@@ -36,7 +35,6 @@ class AddressService {
 
     getAddress = async (userId) => {
         const existingAddress = await this.addressRepository.getAddress(userId);
-        // console.log(existingAddress);
         const theirAddress = existingAddress.map((address) => {
             return {
                 address: address.address,
