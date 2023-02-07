@@ -7,8 +7,11 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
-            // define association here
+        static associate({Cart, cartDetail}) {
+            Cart.hasMany(cartDetail, {
+                foreignKey: "cartId",
+                as: "cd",
+            });
         }
     }
     Cart.init(
@@ -27,18 +30,17 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.INTEGER,
             },
-            productId: {
-                allowNull: true,
-                type: DataTypes.INTEGER,
-            },
             inPaid: {
-                allowNull: false,
+                allowNull: true,
+                defaultValue: false,
                 type: DataTypes.BOOLEAN,
             },
         },
         {
             sequelize,
             modelName: "Cart",
+            tableName: "Cart",
+            timestamps: true,
         }
     );
     return Cart;
