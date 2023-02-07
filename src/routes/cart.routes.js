@@ -10,6 +10,8 @@ router.post("/", authMiddleware, cartController.createCart);
 router.get("/", authMiddleware, cartController.getCarts);
 
 //장바구니 수정
-router.patch("/:userId/cart/:cartId", authMiddleware, cartController.editCart);
+router.patch("/:cartId/user/:userId", authMiddleware, cartController.editCart);
 
+//장바구니 삭제
+router.delete("/:cartId/user/:userId", authMiddleware, cartController.deleteCart);
 module.exports = router;
