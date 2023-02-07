@@ -4,7 +4,7 @@ const CartDetailRepository = require("../repositories/cartDetail.repository");
 
 class CartService {
     cartRepository = new CartRepository(Cart);
-
+    cartDetailRepository = new CartDetailRepository(Cart);
     createCart = async (userId, {productId, count}) => {
         try {
             const {cartId} = await this.cartRepository.createCart(userId, count);
@@ -32,28 +32,26 @@ class CartService {
         }
     };
 
-    // module.exports = CartService;
-
-    // const CartRepository = require("../repositories/cart.repository.js");
-    // const {User, Cart} = require("../models/index.js");
-
-    // class CartService {
-    //     cartRepository = new CartRepository(User, Cart);
-
-    editCart = async (userId, cartId, productId, count) => {
+    editCart = async (cartId, userId, productId, count) => {
         try {
-            console.log(1);
-            console.log(userId, cartId, productId, count);
-            const findmyCart = await this.cartRepository.findMyCart(userId, cartId, productId);
-            if (!findmyCart) {
-                const error = new Error("해당 유저의 장바구니가 존재하지 않습니다.");
-                error.name = "Cart Not Found";
-                error.status = 400;
-                throw error;
-            }
-            return await this.cartRepository.editCart(userId, cartId, productId, count);
+            await this.cartDetailRepository.editCart(cartId, userId, productId, count);
         } catch (error) {
-            error;
+            error.name = "Cart Not Found";
+            error.status = 400;
+            error.message = "처리할 장바구니 내역이 존재하지 않습니다.";
+            throw error;
+        }
+    };
+
+    deleteCart = async (cartId, userId, productId) => {
+        console.log(userId);
+        try {
+            await this.cartDetailRepository.deleteCart(cartId, userId, productId);
+        } catch (error) {
+            error.name = "Product Not Found";
+            error.status = 400;
+            error.message = "삭제할 상품이 존재하지 않습니다.";
+            throw error;
         }
     };
 }
