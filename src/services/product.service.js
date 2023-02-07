@@ -36,6 +36,20 @@ class ProductService {
 
     return;
   }
+  async updateProduct(name, photo, price, quantity, active, description) {
+    try {
+      await this.productRepository.updateProduct(
+        name,
+        photo,
+        price,
+        quantity,
+        active,
+        description
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async removeProduct(productId) {
     try {

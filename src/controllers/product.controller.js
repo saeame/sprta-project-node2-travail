@@ -33,6 +33,11 @@ class ProductController {
 
     res.status(201).json({ message: '상품이 정상적으로 등록되었습니다.' });
   };
+  updateProduct = async (req, res) => {
+    const productId = +req.params.productId;
+    await this.productService.updateProduct(productId);
+    return;
+  };
 
   removeProduct = async (req, res, next) => {
     try {
