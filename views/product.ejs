@@ -1,0 +1,43 @@
+<div id="detail-item"></div>
+
+<script>
+  function getData() {
+    const detailId = location.href.split('/').pop();
+    $.ajax({
+      type: 'GET',
+      url: `/product/${detailId}`,
+      data: {},
+      success: function (response) {
+        const detail = `
+            <div class="detail-item-summary">
+                <img class="detail-item-image" src=${response.data.photo}/>
+                <div class="detail-item-title">
+                    <div class="detail-item-set">
+                        <div>상품명 : ${response.data.name}</div>
+                        <div>가격 : ${response.data.price}</div>
+                    </div>
+                    <div class="detail-item-buttons">
+                        <button class="detail-item-button" onclick="moveBasket()">장바구니 담기</button>
+                        <button class="detail-item-button" onclick="orderProduct()">바로 구매</button>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-item-info">상세 내역 : ${response.data.description}</div>
+        `;
+        $('#detail-item').append(detail);
+      },
+      error: function (response) {
+        return '에러입니다';
+      },
+    });
+  }
+
+  function moveBasket() {
+    location.href = '/order/cart';
+  }
+  function orderProduct() {
+    location.href = '/order';
+  }
+
+  getData();
+</script>
