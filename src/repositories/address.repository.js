@@ -15,15 +15,15 @@ class AddressRepository {
     // 같은 userId의 주소들 중에서 현재 body로 받은 address와 같은것이 있는지 확인
 
     // 주소정보 저장
-    createthisAddress = async (userId, address, addressName, name) => {
+    createthisAddress = async (userId, address, name, addressName) => {
         console.log("---------------------------------");
         try {
             const newAddressData = await this.addressModel.create(
                 {
                     userId,
                     address,
-                    addressName,
                     name,
+                    addressName,
                 },
                 {raw: true}
             );

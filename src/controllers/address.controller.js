@@ -5,13 +5,10 @@ class AddressController {
     // Service
     addressService = new AddressService();
 
-    // 새 주소 등록 [미완료 - 기존 주소와 대조하는 로직 짜야함]
+    // 새 주소 등록
     addnewAddress = async (req, res) => {
-        // auth Middleware에서 인증후 넘어오게 한다면?
         try {
             const {userData} = req;
-            // console.log(userData.userId);
-            // const userId = userData.userId;
             const {address, addressName, name} = await addNewAddressValidation.validateAsync(
                 req.body
             );
@@ -22,7 +19,6 @@ class AddressController {
                 addressName,
                 name
             );
-            // console.log("!!!!!!!!!!!!!!!");
             return res
                 .status(user_address.status)
                 .json({success: user_address, message: user_address.message});
@@ -67,7 +63,6 @@ class AddressController {
             const {address, addressName, name} = await addNewAddressValidation.validateAsync(
                 req.body
             );
-            // console.log(userId, addressId);
 
             const editAddressResult = await this.addressService.editAddress(
                 userId,
@@ -86,7 +81,7 @@ class AddressController {
             return res.status(error.status).json({success: error.success, message: error.message});
         }
     };
-    // 회원정보삭제 // 미완료
+    // 회원정보삭제 //
     deleteAddress = async (req, res) => {
         try {
             const {userId, addressId} = req.params;
