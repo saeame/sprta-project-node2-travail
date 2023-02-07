@@ -76,23 +76,18 @@ class AddressController {
             if (error.name === "ValidationError") {
                 error.status = 412;
                 error.success = false;
-                error.message = "데이터 형식이 올바르지 않습니다.";
+                error.message = "주소 형식이 올바르지 않습니다.";
             }
             return res.status(error.status).json({success: error.success, message: error.message});
         }
     };
-    // 회원정보삭제 //
+    // 회원 주소 삭제 //
     deleteAddress = async (req, res) => {
         try {
             const {userId, addressId} = req.params;
             const destoyAddress = await this.addressService.deleteAddress(userId, addressId);
             return res.status(200).json({success: destoyAddress, message: destoyAddress.message});
         } catch (error) {
-            if (error.name === "ValidationError") {
-                error.status = 412;
-                error.success = false;
-                error.message = "데이터 형식이 올바르지 않습니다.";
-            }
             return res.status(error.status).json({success: error.success, message: error.message});
         }
     };

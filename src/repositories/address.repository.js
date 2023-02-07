@@ -27,8 +27,6 @@ class AddressRepository {
                 },
                 {raw: true}
             );
-            // console.log(newAddressData);
-            // console.log("!???");
             return {
                 status: 200,
                 success: true,
@@ -36,7 +34,6 @@ class AddressRepository {
             };
         } catch (error) {
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못했습니다.";
             error.status = 400;
             throw error;
         }
@@ -44,11 +41,6 @@ class AddressRepository {
 
     getAddress = async (userId) => {
         try {
-            // const existingAddress = await this.addressModel.findAll({
-            //     attributes: ["address", "addressName", "name"],
-            //     where: {userId},
-            // });
-
             const existingAddress = await this.addressModel.findAll({
                 attributes: ["address", "addressName", "name"],
                 where: {userId: userId},
@@ -58,7 +50,6 @@ class AddressRepository {
         } catch (error) {
             console.log(error);
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
             error.status = 400;
             throw error;
         }
@@ -71,22 +62,17 @@ class AddressRepository {
                 where: {userId: userId, addressId: addressId},
                 raw: true,
             });
-            // console.log(findAddress);
             return findAddress;
         } catch (error) {
-            // DB에서 발생한 Error
             console.log(error);
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
             error.status = 400;
             throw error;
         }
     };
 
     editAddress = async (userId, addressId, address, addressName, name) => {
-        //
         try {
-            // console.log(userId, addressId, address, addressName, name);
             await this.addressModel.update(
                 {address, addressName, name},
                 {
@@ -96,7 +82,7 @@ class AddressRepository {
             return {status: 200, success: true, message: "주소가 수정되었습니다."};
         } catch (error) {
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
+
             error.status = 400;
             throw error;
         }
@@ -107,7 +93,6 @@ class AddressRepository {
             return {status: 200, success: true, message: "주소가 삭제되었습니다."};
         } catch (error) {
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
             error.status = 400;
             throw error;
         }
