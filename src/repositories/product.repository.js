@@ -33,6 +33,17 @@ class ProductRepository {
       description,
     });
   }
+  async updateProduct(productId, active) {
+    try {
+      const productData = await Product.update(
+        { active, productId },
+        { where: { productId } }
+      );
+      return productData;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async removeProduct(productId) {
     try {
