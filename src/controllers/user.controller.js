@@ -1,13 +1,19 @@
+const { signupValidation } = require('../../validations');
 const UserService = require('../services/user.service');
+const { CustomError } = require('../util/customError.util');
 
 class UserController {
   userService = new UserService();
 
   signup = async (req, res, next) => {
     try {
+      const body = await signupValidation.validateAsync(req.body);
       await this.userService.signup(req.body);
       res.status(201).end();
     } catch (err) {
+      if (err.isJoi) {
+        next(new CustomError(422, err.message));
+      }
       next(err);
     }
   }
