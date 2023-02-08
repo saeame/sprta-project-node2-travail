@@ -16,7 +16,7 @@
   function getMain() {
     $.ajax({
       type: 'GET',
-      url: 'http://localhost:3000/product',
+      url: '/product',
       data: {},
       success: function (response) {
         console.log(response.products);
@@ -24,7 +24,7 @@
 
         productArray.slice(per * (page - 1), per * page).forEach((product) => {
           const productElement = `<div class="product-item">
-                <div class="product-item-image">${product.productId}</div>
+                <div class="product-item-image" onclick="moveDetail(${product.productId})">${product.productId}</div>
                 <div class="product-des">상품명 : ${product.name}</div>
                 <div class="product-des">가격 : ${product.price}</div>
             </div>`;
@@ -34,6 +34,11 @@
       },
     });
   }
+
+  function moveDetail(id) {
+    location.href = `/products/${id}`;
+  }
+
 
   function changePage(event) {
     console.log(event.target.textContent);

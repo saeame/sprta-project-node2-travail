@@ -16,6 +16,11 @@
   flex-direction: column;
 }
 
+
+.product-item-image:hover {
+  cursor: pointer;
+}
+
 .product-item-image {
   width: 90%;
   height: 100px;

@@ -29,6 +29,8 @@
     <!-- css -->
     <link rel="stylesheet" MIME Type="text/css" href="/css/header.css" />
     <link rel="stylesheet" MIME Type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" MIME Type="text/css" href="/css/product.css" />
+
 
     <title>Travail</title>
   </head>
@@ -37,6 +39,8 @@
     <%- include('header.ejs') %>
 
     <!-- body -->
+    <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %> <% if
+    (components === 'currentProduct') { %> <%- include('product.ejs') %> <% } %>
     <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %>
   </body>
 </html>
