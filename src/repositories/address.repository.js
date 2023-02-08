@@ -4,7 +4,6 @@ const {Review, sequelize} = require("../models/index.js");
 class AddressRepository {
     constructor(UserModel, AddressModel) {
         this.userModel = UserModel;
-        // console.log(AddressModel);
         this.addressModel = AddressModel;
     }
 

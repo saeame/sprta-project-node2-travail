@@ -59,7 +59,6 @@ class CartRepository {
                 where: {userId: userId, cartId: cartId},
                 raw: true,
             });
-            // console.log(findCart);
             return findCart;
         } catch (error) {
             error.name = "Database Error";

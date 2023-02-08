@@ -33,12 +33,10 @@ class AddressController {
     // 회원 주소 조회 [완료]
     getAddress = async (req, res) => {
         // auth Middleware에서 인증후 넘어오게 한다면?
-        // const {userId} = res.locals.user
+
         try {
             const {userId} = req.params;
-            // console.log(userId);
             const user_address = await this.addressService.getAddress(userId);
-            // console.log(theirAddress);
             return res.status(200).json({user_address});
         } catch (error) {
             return res.status(error.status).json({success: error.success, message: error.message});

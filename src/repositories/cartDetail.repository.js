@@ -36,7 +36,7 @@ class CartDetailRepository {
             return {status: 200, success: true, message: "수량이 변경되었습니다."};
         } catch (error) {
             error.name = "Database Error";
-            // error.message = "요청을 처리하지 못하였습니다.";
+            error.message = "요청을 처리하지 못하였습니다.";
             error.status = 400;
             throw error;
         }
@@ -45,7 +45,6 @@ class CartDetailRepository {
     deleteCart = async (userId, cartId, productId) => {
         try {
             const {cartId} = await this.model.findOne({where: {productId}});
-            console.log(productId);
             await this.cartModel.destroy({where: {cartId}});
             return {status: 200, success: true, message: "상품이 삭제되었습니다."};
         } catch (error) {

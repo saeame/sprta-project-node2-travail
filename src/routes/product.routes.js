@@ -1,18 +1,22 @@
-const router = require('express').Router();
-
-const ProductController = require('../controllers/product.controller');
+const router = require("express").Router();
+const authMiddleware = require("../middleware/auth.middleware");
+const ProductController = require("../controllers/product.controller");
 const productController = new ProductController();
 
 /* 전체 공개 */
 //상품목록조회
-router.get('/', productController.getAllProduct);
+router.get("/", productController.getAllProduct);
+
 //상품상세조회
-router.get('/:productId', productController.getProduct);
+router.get("/:productId", productController.getProduct);
+
 //상품등록
-router.post('/admin/:productId', productController.createProduct);
-//상품수정 (check)
-router.patch('/admin/:productId', productController.updateProduct);
+router.post("/admin", authMiddleware, productController.createProduct);
+
+//상품수정
+router.patch("/admin/:productId", authMiddleware, productController.updateProduct);
+
 //상품삭제
-router.delete('/admin/:productId', productController.removeProduct);
+router.delete("/admin/:productId", authMiddleware, productController.removeProduct);
 
 module.exports = router;
