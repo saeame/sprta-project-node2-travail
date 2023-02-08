@@ -45,7 +45,6 @@ class CartDetailRepository {
     deleteCart = async (userId, cartId, productId) => {
         try {
             const {cartId} = await this.model.findOne({where: {productId}});
-            console.log(productId);
             await this.cartModel.destroy({where: {cartId}});
             return {status: 200, success: true, message: "상품이 삭제되었습니다."};
         } catch (error) {
