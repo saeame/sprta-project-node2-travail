@@ -38,11 +38,27 @@ class AddressRepository {
         }
     };
 
+    getthisAddress = async (userId, address) => {
+        try {
+            const existingAddress = await this.addressModel.findOne({
+                attributes: ["address", "addressName", "name"],
+                where: {userId, address},
+                raw: true,
+            });
+            return existingAddress;
+        } catch (error) {
+            console.log(error);
+            error.name = "Database Error";
+            error.status = 400;
+            throw error;
+        }
+    };
+
     getAddress = async (userId) => {
         try {
             const existingAddress = await this.addressModel.findAll({
                 attributes: ["address", "addressName", "name"],
-                where: {userId: userId},
+                where: {userId},
                 raw: true,
             });
             return existingAddress;

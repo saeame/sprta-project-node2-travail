@@ -8,14 +8,14 @@ class ProductRepository {
     }
 
     async getAllProduct() {
-        return Product.findAll({
+        return this.model.findAll({
             attributes: ["productId", "name", "photo", "price", "active"],
             order: [["createdAt", "DESC"]],
         });
     }
 
     async getProduct(productId) {
-        return Product.findOne({
+        return this.model.findOne({
             where: { productId },
             attributes: [
                 "productId",
@@ -40,11 +40,15 @@ class ProductRepository {
         });
     }
 
-    async updateProduct(productId, orderId, name, photo, price, quantity, active, description) {
+    async updateProduct({ productId, orderId, name, photo, price, quantity, active, description }) {
         try {
             // 주문상세테이블에서 productId로 해당 상품을 찾아옴.
             // 그 상품의 shipment 값을 확인하여 에러메시지 발생
             const order = await this.orderDetailModel.findOne({ where: { productId } });
+            if (order === null) {
+                throw new Error('소중한 당신의 주문이 없습니다');
+            }
+
             if (order) {
                 const { orderId } = order;
                 const { shipment } = await this.orderModel.findOne({ where: { orderId } });
@@ -68,11 +72,21 @@ class ProductRepository {
 
     async removeProduct(productId) {
         try {
-            const order = await this.orderDetailModel.findOne({ where: { productId } });
+            const { o: order } = await this.orderDetailModel.findOne({
+                include: [
+                    {
+                        model: this.orderModel,
+                        attributes: ["shipment"],
+                        as: 'o',
+                        required: true,             // inner join
+                        // required: true,          // default left outer join
+                    },
+                ],
+                where: { productId },
+            });
+
             if (order) {
-                const { orderId } = order;
-                const { shipment } = await this.orderModel.findOne({ where: { orderId } });
-                if (shipment !== 4) {
+                if (order.shipment !== 4) {
                     const error = new Error("이미 처리중인 주문이 있어 삭제가 불가능한 상품입니다.");
                     error.name = "REQUEST NOT ALLOWED";
                     error.status = 400;

@@ -4,23 +4,27 @@ class ProductController {
     productService = new ProductService();
 
     getAllProduct = async (req, res, next) => {
-        const products = await this.productService.getAllProduct();
-        res.status(200).json({products});
+        try {
+            const products = await this.productService.getAllProduct();
+            res.status(200).json({ products });
+        } catch (err) {
+            next(err);
+        }
     };
 
     getProduct = async (req, res, next) => {
         try {
-            let {productId} = req.params;
+            let { productId } = req.params;
             const productDetail = await this.productService.getProduct(productId);
-            res.json({data: productDetail});
+            res.json({ data: productDetail });
         } catch (err) {
             next(err);
         }
     };
     createProduct = async (req, res) => {
         try {
-            const {userData} = req;
-            const {name, photo, price, quantity, active, description} = req.body;
+            const { userData } = req;
+            const { name, photo, price, quantity, active, description } = req.body;
             await this.productService.createProduct(
                 userData.admin,
                 name,
@@ -30,16 +34,16 @@ class ProductController {
                 active,
                 description
             );
-            return res.status(201).json({message: "상품이 정상적으로 등록되었습니다."});
+            return res.status(201).json({ message: "상품이 정상적으로 등록되었습니다." });
         } catch (error) {
-            return res.status(error.status).json({success: error.success, message: error.message});
+            return res.status(405).json({ message: error.message });
         }
     };
     updateProduct = async (req, res) => {
         try {
-            const {userData} = req;
+            const { userData } = req;
             const productId = +req.params.productId;
-            const {name, photo, price, quantity, active, description} = req.body;
+            const { name, photo, price, quantity, active, description } = req.body;
             const editProductResult = await this.productService.updateProduct(
                 userData.admin,
                 productId,
@@ -50,9 +54,9 @@ class ProductController {
                 active,
                 description
             );
-            return res.status(200).json({editProductResult});
+            return res.status(200).json({ editProductResult });
         } catch (error) {
-            return res.status(405).json({message: error.message});
+            return res.status(405).json({ message: error.message });
         }
     };
 
@@ -61,7 +65,7 @@ class ProductController {
             const productId = +req.params.productId;
             await this.productService.removeProduct(productId);
 
-            res.status(200).json({message: "상품이 정상적으로 삭제되었습니다."});
+            res.status(200).json({ message: "상품이 정상적으로 삭제되었습니다." });
         } catch (err) {
             next(err);
         }

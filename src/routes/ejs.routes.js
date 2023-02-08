@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/auth.middleware');
+const { authMiddleware } = require('../middleware/auth.middleware');
 
 // const authMiddleware  -> 로그인여부 확인해서 페이지 렌더링 또는 리다이렉트 여부 결정
 // ejs는 우리가 구성한 화면마다 파일을 생성했습니다~

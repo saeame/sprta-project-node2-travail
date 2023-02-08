@@ -20,6 +20,24 @@ const signupValidation = Joi.object({
     name: Joi.string().not('').required(),
 });
 
+const updateValidation = Joi.object({
+    email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .optional(),
+
+    password: Joi.string()
+        .alphanum()
+        .not('')
+        .min(8)
+        .max(15)
+        .optional(),
+
+    checkPass: Joi.optional(),
+    address: Joi.string().not('').optional(),
+    phone: Joi.string().not('').optional(),
+    name: Joi.string().not('').optional(),
+})
+
 const addNewAddressValidation = joi.object({
     address: joi.string().required().not(""),
     addressName: joi.string().required().not(""),
@@ -28,4 +46,5 @@ const addNewAddressValidation = joi.object({
 module.exports = {
     addNewAddressValidation,
     signupValidation,
+    updateValidation
 };

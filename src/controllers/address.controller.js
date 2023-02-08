@@ -6,7 +6,7 @@ class AddressController {
     addressService = new AddressService();
 
     // 새 주소 등록
-    addnewAddress = async (req, res) => {
+    addnewAddress = async (req, res, next) => {
         try {
             const {userData} = req;
             const {address, addressName, name} = await addNewAddressValidation.validateAsync(
@@ -24,22 +24,25 @@ class AddressController {
                 .json({message: '등록완료'});
         } catch (error) {
             if (error.isJoi) {
-                return res.status(422).json({message: error.details[0].message});
+                // return res.status(422).json({message: error.details[0].message});
+                next(error)
             }
-            res.status(500).json({message: error.message});
+            // res.status(500).json({message: error.message});
+            next(error);
         }
     };
 
     // 회원 주소 조회 [완료]
-    getAddress = async (req, res) => {
+    getAddress = async (req, res, next) => {
         // auth Middleware에서 인증후 넘어오게 한다면?
 
         try {
-            const {userId} = req.params;
+            const userId = +req.params.userId;
             const user_address = await this.addressService.getAddress(userId);
             return res.status(200).json({user_address});
         } catch (error) {
-            return res.status(error.status).json({success: error.success, message: error.message});
+            // return res.status(error.status).json({success: error.success, message: error.message});
+            next(error)
         }
     };
 

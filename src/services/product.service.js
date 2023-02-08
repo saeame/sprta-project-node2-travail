@@ -1,5 +1,5 @@
 const ProductRepository = require("../repositories/product.repository");
-const {Product} = require("../models/index");
+const { Product } = require("../models/index");
 
 class ProductService {
     productRepository = new ProductRepository();
@@ -53,21 +53,17 @@ class ProductService {
                 error.name = "Product Not Found";
                 error.status = 400;
                 throw error;
-            } else if (admin === true) {
-                const error = new Error("상품을 수정할 권한이 없습니다.");
-                error.name = "Authorization Error";
-                error.status = 412;
-                error.success = false;
-                throw error;
             }
-            await this.productRepository.editProduct(
-                productId,
-                name,
-                photo,
-                price,
-                quantity,
-                active,
-                description
+            await this.productRepository.updateProduct(
+                {
+                    productId,
+                    name,
+                    photo,
+                    price,
+                    quantity,
+                    active,
+                    description
+                }
             );
         } catch (err) {
             throw err;

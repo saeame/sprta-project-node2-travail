@@ -1,5 +1,5 @@
 const AddressRepository = require("../repositories/address.repository.js");
-const {User, Address} = require("../models/index.js");
+const { User, Address } = require("../models/index.js");
 
 class AddressService {
     //Repository
@@ -10,19 +10,27 @@ class AddressService {
         try {
             //1. userId로 이미 존재하고 있는 주소들을 다 불러오기
             // -> 상세조회를 미들웨어로 쓸 순 없나?
-            const existingAddress = await this.addressRepository.getAddress(userId);
+            const existingAddress = await this.addressRepository.getthisAddress(userId, address);
             // const {address} = existingAddress.address
 
-            for (let i = 0; i < existingAddress.length; i++) {
-                if (existingAddress[i].address === address) {
-                    const error = new Error("이미 등록된 주소입니다.");
-                    error.name = "Already exist";
-                    error.status = 412;
-                    error.success = false;
-                    throw error;
-                }
+            if (existingAddress.length > 0) {
+                const error = new Error("이미 등록된 주소입니다.");
+                error.name = "Already exist";
+                error.status = 412;
+                error.success = false;
+                throw error;
             }
-            const newAddress = await this.addressRepository.createthisAddress(
+
+            // for (let i = 0; i < existingAddress.length; i++) {
+            //     if (existingAddress[i].address === address) {
+            //         const error = new Error("이미 등록된 주소입니다.");
+            //         error.name = "Already exist";
+            //         error.status = 412;
+            //         error.success = false;
+            //         throw error;
+            //     }
+            // }
+            await this.addressRepository.createthisAddress(
                 userId,
                 address,
                 addressName,

@@ -11,10 +11,6 @@ class UserService {
 
     signup = async ({ email, password, confirm, phone, address, name }) => {
         try {
-            if (password !== confirm) {
-                throw new CustomError(400, "비밀번호가 일치하지 않습니다.");
-            }
-
             const salt = crypto.randomBytes(64).toString("base64");
             const hashPassword = crypto
                 .pbkdf2Sync(password, salt, +process.env.ITERATIONS, +process.env.KEYLEN, "sha512")
@@ -110,7 +106,7 @@ class UserService {
                 userId: userData.userId,
             };
 
-            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "10m" });
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "60m" });
 
             return token;
         } catch (err) {
