@@ -35,12 +35,12 @@ class ProductController {
             return res.status(error.status).json({success: error.success, message: error.message});
         }
     };
-    editProduct = async (req, res) => {
+    updateProduct = async (req, res) => {
         try {
             const {userData} = req;
-            const {productId} = req.params;
+            const productId = +req.params.productId;
             const {name, photo, price, quantity, active, description} = req.body;
-            const editProductResult = await this.productService.editProduct(
+            const editProductResult = await this.productService.updateProduct(
                 userData.admin,
                 productId,
                 name,

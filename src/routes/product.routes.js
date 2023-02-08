@@ -14,7 +14,7 @@ router.get("/:productId", productController.getProduct);
 router.post("/admin", authMiddleware, productController.createProduct);
 
 //상품수정
-router.patch("/admin/:productId", authMiddleware, productController.editProduct);
+router.patch("/admin/:productId", authMiddleware, productController.updateProduct);
 
 //상품삭제
 router.delete("/admin/:productId", authMiddleware, productController.removeProduct);

@@ -40,7 +40,7 @@ class ProductRepository {
         });
     }
 
-    async editProduct(productId, orderId, name, photo, price, quantity, active, description) {
+    async updateProduct(productId, orderId, name, photo, price, quantity, active, description) {
         try {
             // 주문상세테이블에서 productId로 해당 상품을 찾아옴.
             // 그 상품의 shipment 값을 확인하여 에러메시지 발생

@@ -45,7 +45,7 @@ class ProductService {
             throw error;
         }
     }
-    async editProduct(admin, productId, name, photo, price, quantity, active, description) {
+    async updateProduct(admin, productId, name, photo, price, quantity, active, description) {
         try {
             const findProduct = await this.productRepository.getProduct(productId);
             if (!findProduct) {

@@ -1,46 +1,52 @@
-const OrderService = require('../services/order.service');
+const OrderService = require("../services/order.service");
 
 class OrderController {
-  orderService = new OrderService();
+    orderService = new OrderService();
 
-  createOrder = async (req, res, next) => {
-    try {
-      await this.orderService.createOrder(req.body, req.userData);
+    createOrder = async (req, res, next) => {
+        try {
+            await this.orderService.createOrder(req.body, req.userData);
 
-      res.status(201).end()
-    } catch (err) {
-      next(err);
-    }
-  }
+            res.status(201).end();
+        } catch (err) {
+            next(err);
+        }
+    };
 
-  getOrders = async (req, res, next) => {
-    try {
-      const orders = await this.orderService.getOrders(req.userData.userId);
-      res.status(200).send(orders);
-    } catch (err) {
-      next(err);
-    }
-  }
+    getOrders = async (req, res, next) => {
+        try {
+            const orders = await this.orderService.getOrders(req.userData.userId);
+            res.status(200).send(orders);
+        } catch (err) {
+            next(err);
+        }
+    };
 
-  getOrderDetail = async (req, res, next) => {
-    try {
-      const orderData = await this.orderService.getOrderDetail(req.params.orderDetailId, req.userData.userId);
+    getOrderDetail = async (req, res, next) => {
+        try {
+            const orderData = await this.orderService.getOrderDetail(
+                req.params.orderDetailId,
+                req.userData.userId
+            );
 
-      res.status(200).send(orderData);
-    } catch (err) {
-      next(err);
-    }
-  }
+            res.status(200).send(orderData);
+        } catch (err) {
+            next(err);
+        }
+    };
 
-  deleteOrder = async (req, res, next) => {
-    try {
-      await this.orderService.deleteOrder(req.params.orderId, req.body.password, req.userData);
-      res.status(200).end();
-    } catch (err) {
-      next(err);
-    }
-  }
-
+    deleteOrder = async (req, res, next) => {
+        try {
+            await this.orderService.deleteOrder(
+                req.params.orderId,
+                req.body.password,
+                req.userData
+            );
+            res.status(200).end();
+        } catch (err) {
+            next(err);
+        }
+    };
 }
 
 module.exports = OrderController;
