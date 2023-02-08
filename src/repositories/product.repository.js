@@ -43,16 +43,12 @@ class ProductRepository {
     async editProduct(productId, orderId, name, photo, price, quantity, active, description) {
         try {
             // 주문상세테이블에서 productId로 해당 상품을 찾아옴.
-
-            // 그 상품의 orderStatus 값이 있을 경우에
+            // 그 상품의 shipment 값을 확인하여 에러메시지 발생
             const {orderId} = await this.orderDetailModel.findOne({where: {productId}});
-            console.log(productId);
-            console.log(orderId);
             const {shipment} = await this.orderModel.findOne({where: {orderId}});
             if (shipment !== 4) {
                 const error = new Error("이미 처리중인 주문이 있어 수정이 불가능한 상품입니다.");
                 error.name = "REQUEST NOT ALLOWED";
-                // error.message = "요청을 처리하지 못하였습니다.";
                 error.status = 400;
                 throw error;
             }
@@ -69,10 +65,8 @@ class ProductRepository {
     async removeProduct(productId) {
         try {
             const {orderId} = await this.orderDetailModel.findOne({where: {productId}});
-            console.log(productId);
-            console.log(orderId);
             const {shipment} = await this.orderModel.findOne({where: {orderId}});
-            if (shipment === 4) {
+            if (shipment !== 4) {
                 const error = new Error("이미 처리중인 주문이 있어 삭제가 불가능한 상품입니다.");
                 error.name = "REQUEST NOT ALLOWED";
                 error.status = 400;
