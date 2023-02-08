@@ -17,7 +17,7 @@ router.get('/products', (req, res) => {
 
 router.get('/products/:productId', (req, res) => {
   res.render('index.ejs', { components: 'currentProduct' });
-
+})
 
 //로그인페이지
 router.get('/login', authMiddleware, (req, res) => {
