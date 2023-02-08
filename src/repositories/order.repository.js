@@ -36,7 +36,8 @@ class OrderRepository {
             });
 
             if (orders.length < 1) {
-                throw new CustomError(404, "주문목록이 없습니다.");
+                const errtemp = new CustomError(404, "주문목록이 없습니다.");
+                throw errtemp;
             }
 
             return orders;

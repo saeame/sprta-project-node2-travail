@@ -13,15 +13,15 @@ class AddressController {
                 req.body
             );
 
-            const user_address = await this.addressService.createAddress(
+            await this.addressService.createAddress(
                 userData.userId,
                 address,
                 addressName,
                 name
             );
             return res
-                .status(user_address.status)
-                .json({success: user_address, message: user_address.message});
+                .status(200)
+                .json({message: '등록완료'});
         } catch (error) {
             if (error.isJoi) {
                 return res.status(422).json({message: error.details[0].message});

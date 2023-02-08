@@ -16,20 +16,20 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use(ejsRouter);
 
 
-app.use(ejsRouter);
 
 
 app.use('/user', [userRouter, addressRouter]);
 app.use('/product', productRouter);
-app.use('/cart', cartRouter);
+app.use('/order/cart', cartRouter);
 app.use('/order', orderRouter);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/views'));
+app.use(ejsRouter);
+app.use(ejsRouter);
 
 
 app.set('views', __dirname + '/views');

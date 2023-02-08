@@ -1,4 +1,4 @@
-const {Product, orderDetail, Order} = require("../models");
+const { Product, orderDetail, Order } = require("../models");
 
 class ProductRepository {
     constructor() {
@@ -16,7 +16,7 @@ class ProductRepository {
 
     async getProduct(productId) {
         return Product.findOne({
-            where: {productId},
+            where: { productId },
             attributes: [
                 "productId",
                 "name",
@@ -44,19 +44,23 @@ class ProductRepository {
         try {
             // 주문상세테이블에서 productId로 해당 상품을 찾아옴.
             // 그 상품의 shipment 값을 확인하여 에러메시지 발생
-            const {orderId} = await this.orderDetailModel.findOne({where: {productId}});
-            const {shipment} = await this.orderModel.findOne({where: {orderId}});
-            if (shipment !== 4) {
-                const error = new Error("이미 처리중인 주문이 있어 수정이 불가능한 상품입니다.");
-                error.name = "REQUEST NOT ALLOWED";
-                error.status = 400;
-                throw error;
+            const order = await this.orderDetailModel.findOne({ where: { productId } });
+            if (order) {
+                const { orderId } = order;
+                const { shipment } = await this.orderModel.findOne({ where: { orderId } });
+                if (shipment !== 4) {
+                    const error = new Error("이미 처리중인 주문이 있어 수정이 불가능한 상품입니다.");
+                    error.name = "REQUEST NOT ALLOWED";
+                    error.status = 400;
+                    throw error;
+                }
             }
+
             await this.model.update(
-                {name, photo, price, quantity, active, description},
-                {where: productId}
+                { name, photo, price, quantity, active, description },
+                { where: productId }
             );
-            return {status: 200, success: true, message: "상품 정보가 변경되었습니다."};
+            return { status: 200, success: true, message: "상품 정보가 변경되었습니다." };
         } catch (error) {
             throw error;
         }
@@ -64,16 +68,19 @@ class ProductRepository {
 
     async removeProduct(productId) {
         try {
-            const {orderId} = await this.orderDetailModel.findOne({where: {productId}});
-            const {shipment} = await this.orderModel.findOne({where: {orderId}});
-            if (shipment !== 4) {
-                const error = new Error("이미 처리중인 주문이 있어 삭제가 불가능한 상품입니다.");
-                error.name = "REQUEST NOT ALLOWED";
-                error.status = 400;
-                throw error;
+            const order = await this.orderDetailModel.findOne({ where: { productId } });
+            if (order) {
+                const { orderId } = order;
+                const { shipment } = await this.orderModel.findOne({ where: { orderId } });
+                if (shipment !== 4) {
+                    const error = new Error("이미 처리중인 주문이 있어 삭제가 불가능한 상품입니다.");
+                    error.name = "REQUEST NOT ALLOWED";
+                    error.status = 400;
+                    throw error;
+                }
             }
-            await Product.destroy({where: {productId}});
-            return {status: 200, success: true, message: "상품이 삭제되었습니다."};
+            await Product.destroy({ where: { productId } });
+            return { status: 200, success: true, message: "상품이 삭제되었습니다." };
         } catch (err) {
             throw err;
         }
